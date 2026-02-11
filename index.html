@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>💌</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+        margin: 0;
+        height: 100vh;
+        background: #c4a3ce;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .container {
+        text-align: center;
+        padding: 16px;
+        max-width:420px;
+        width:100%;
+    }
+
+    img.main {
+        width: 260px;
+        max-width: 70vw;
+        border-radius: 12px;
+        margin-bottom: 20px;
+    }
+
+    p {    
+        margin-bottom: 20px;
+        word-spacing: 5px;
+        font-family: 'Lora', serif;
+        font-size: clamp(16px, 4vw, 20px);
+        line-height: 1.4;
+    }
+
+    .buttons {
+        display: inline-flex;
+        gap: 20px;
+    }
+
+    button {
+        font-size: 16px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: 'Lora',serif;
+    }
+
+    #yes {
+        background: #ff5c8a;
+        color: white;
+    }
+
+    #no {
+        background: #eee;
+    }
+
+    .heart {
+        position: fixed;
+        top: -40px;
+        width: 30px;
+        pointer-events: none;
+        animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+        to {
+            transform: translateY(110vh);
+            opacity: 0;
+        }
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+    <!-- FIRST IMAGE -->
+    <img id="mainImage" class="main" src="bear-love.gif" alt="bear">
+
+    <p id="question">czy mogę zostać twoją walentynką?</p>
+
+
+<div class="buttons">
+    <button id="yes">tak</button>
+    <button id="no">nie</button>
+</div>
+
+</div>
+
+<script>
+    const hoverTexts = [
+    "ej!",
+    "no co ty",
+    "czy ty zwariowałaś",
+    "oki ale teraz serio",
+    "koniec"
+];
+
+    let hoverIndex = 0;
+    function updateQuestionText() {
+    const question = document.getElementById("question");
+    const buttons = document.querySelector(".buttons");
+    if (hoverIndex < hoverTexts.length) {
+        document.getElementById("question").textContent = hoverTexts[hoverIndex];
+        hoverIndex++;
+    }
+    if (hoverIndex === hoverTexts.length) {
+        noBtn.remove(); // remove "nie"
+
+        buttons.style.justifyContent = "center"; // center "tak"
+    }
+}
+
+
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const img = document.getElementById("mainImage");
+
+    function moveNoButton() {
+    const margin = 20;
+
+    const rect = noBtn.getBoundingClientRect();
+
+    // On first move, switch to fixed at current position
+    if (noBtn.style.position !== "fixed") {
+        noBtn.style.position = "fixed";
+        noBtn.style.left = rect.left + "px";
+        noBtn.style.top = rect.top + "px";
+    }
+
+    const maxX = window.innerWidth - rect.width - margin;
+    const maxY = window.innerHeight - rect.height - margin;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noBtn.style.left = `${x}px`;
+    noBtn.style.top = `${y}px`;
+}
+
+
+
+
+    noBtn.addEventListener("mouseenter", () => {
+    updateQuestionText();
+    moveNoButton();
+});
+
+noBtn.addEventListener("click", () => {
+    updateQuestionText();
+    moveNoButton();
+});
+
+
+    yesBtn.addEventListener("click", () => {
+        img.src = "cat-heart.gif";
+
+        document.getElementById("question").textContent = "kocham cię lencia!!!";
+        yesBtn.remove();
+        noBtn.remove();
+
+    const heartInterval = setInterval(() => {
+        createHeart();
+    }, 25);
+    setTimeout(() => {
+        clearInterval(heartInterval);
+    }, 3600000);
+
+
+        for (let i = 0; i < 20; i++) {
+            createHeart();
+        }
+    });
+
+    function createHeart() {
+        const heart = document.createElement("img");
+        heart.src = "heart.png";
+        heart.className = "heart";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = 2 + Math.random() * 3 + "s";
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 7000);
+    }
+</script>
+
+
+</body>
+</html>
